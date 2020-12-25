@@ -1,5 +1,5 @@
 #pragma once
-#include <CImg.h>
+#include "CImg.h"
 #include <string>
 #include <vector>
 #include <EuroScopePlugIn.h>
