@@ -5,5 +5,5 @@
 #include <string>
 #include <vector>
 
-std::vector<stripType> loadedTypes;
-void loadSettings();
+std::vector<stripType> loadSettings();
+const std::vector<stripType> loadedTypes = loadSettings();
