@@ -1,5 +1,7 @@
 #include "loadSettings.h"
 
+// loads stripTypes defined in settings file and other settings such as printer into. Not yet implemented. For now, loads hard-wired settings (just 1 strip type: UKDeparture)
+
 std::vector<stripType> loadSettings() {
 	std::vector<stripType> tempSettings;
 	tempSettings.push_back(stripType());
