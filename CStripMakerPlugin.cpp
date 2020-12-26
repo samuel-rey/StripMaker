@@ -7,8 +7,9 @@
 #include "constant.h"
 #include <filesystem>
 
-std::shared_ptr<spdlog::logger> logger;
-CCallsignLookup* Callsigns = nullptr;
+std::shared_ptr<spdlog::logger> logger; // local instance of logger
+CCallsignLookup* Callsigns = nullptr; // loaded phonetic callsigns
+std::vector<std::string> printedStrips;
 
 CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILITY_CODE, MY_PLUGIN_NAME, MY_PLUGIN_VERSION, MY_PLUGIN_DEVELOPER, MY_PLUGIN_COPYRIGHT)
 {
@@ -32,7 +33,26 @@ CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILI
 	if (std::filesystem::exists("ICAO_Airlines.txt")) {
 		Callsigns->readFile("ICAO_Airlines.txt");
 	}
-    
 }
 
+void CStripMakerPlugIn::OnGetTagItem(EuroScopePlugIn::CFlightPlan FlightPlan,
+    EuroScopePlugIn::CRadarTarget RadarTarget,
+    int ItemCode,
+    int TagData,
+    char sItemString[16],
+    int* pColorCode,
+    COLORREF* pRGB,
+    double* pFontSize) {
+    switch (ItemCode) {
+    default:
+        return;
+    case TAG_ITEM_PRINT_STATUS:
+        if (!(std::find(printedStrips.begin(), printedStrips.end(), FlightPlan.GetCallsign()) == printedStrips.end())) {
+            strcpy(sItemString, "PRINTED");
+        }
+        else {
+            strcpy(sItemString, "PRINT");
+        }
+        return;
+    }
 }
