@@ -14,13 +14,13 @@ public:
     CStripMakerPlugIn();
     //~CStripMakerPlugIn();
 
-    //---OnFunctionCall------------------------------------------
-    //virtual void OnFunctionCall(int FunctionId, const char* sItemString, POINT Pt, RECT Area);
+    // called by EuroScope when a tag item function is called
+    virtual void OnFunctionCall(int FunctionId, const char* sItemString, POINT Pt, RECT Area);
 
-    //---OnGetTagItem------------------------------------------
+    // called by EuroScope when it needs a tag item value
     virtual void OnGetTagItem(EuroScopePlugIn::CFlightPlan FlightPlan, EuroScopePlugIn::CRadarTarget RadarTarget, int ItemCode, int TagData, char sItemString[16], int* pColorCode, COLORREF* pRGB, double* pFontSize);
 
-    //Calls the DisplayUserMessage function to print on the Message channel
+    // calls the DisplayUserMessage function to print on the Message channel
     void printMessage(std::string message) {
         DisplayUserMessage("Message", "StripMaker", message.c_str(),TRUE,FALSE,FALSE,FALSE,FALSE);
     }
