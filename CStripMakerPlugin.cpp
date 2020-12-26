@@ -55,6 +55,8 @@ void CStripMakerPlugIn::OnGetTagItem(EuroScopePlugIn::CFlightPlan FlightPlan,
         }
         return;
     }
+}
+
 void CStripMakerPlugIn::OnFunctionCall(int FunctionId,
     const char* sItemString,
     POINT Pt,
@@ -65,5 +67,9 @@ void CStripMakerPlugIn::OnFunctionCall(int FunctionId,
         printedStrips.push_back(FlightPlanSelectASEL().GetCallsign());
         return;
     }
+}
+
+std::vector<stripType>::size_type CStripMakerPlugIn::getStripType() {
+    return 0;
 }
 }

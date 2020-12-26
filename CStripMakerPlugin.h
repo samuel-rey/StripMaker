@@ -1,6 +1,8 @@
 #pragma once
 #include <EuroScopePlugIn.h>
 #include <string>
+#include <vector>
+#include "flightStrip.h"
 
 #define MY_PLUGIN_NAME      "StripMaker"
 #define MY_PLUGIN_VERSION   "Alpha 0.1.0"
@@ -24,4 +26,6 @@ public:
     void printMessage(std::string message) {
         DisplayUserMessage("Message", "StripMaker", message.c_str(),TRUE,FALSE,FALSE,FALSE,FALSE);
     }
+    // gets the required strip type according to type of flight and current strips in use
+    std::vector<stripType>::size_type getStripType();
 };
