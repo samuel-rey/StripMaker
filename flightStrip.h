@@ -23,10 +23,16 @@ struct stripType {
 // this contains all the flight data in the correct format and the strip data, that is, the template for the particular strip type. It also contains the functions for making the strip image.
 class flightStrip
 {
+private:
+	void applyTextToFields(); // takes the stripTemplate and applies the fieldContents to it according to the settings from its stripType
 public:
 	stripType type;
 	std::vector<std::string> fieldContents;
 	flightStrip(stripType type, std::vector<std::string> fpContents); // constructor for this class. Creates instance of flightStrip with type 'type' and populates fieldContents with the info from 'fpContents'
-	void applyTextToFields(); // takes the stripTemplate and applies the fieldContents to it according to the settings from its stripType
+	void print(); // prints strip out to paper
+#ifdef DEBUG
+	void display(); // displays strip in window
+#endif // DEBUG
+
 };
 
