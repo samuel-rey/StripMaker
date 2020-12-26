@@ -69,6 +69,9 @@ void CStripMakerPlugIn::OnFunctionCall(int FunctionId,
         }
 #endif // _DEBUG
         flightStrip strip(plugInSettings::getTypes()[getStripType()], getFieldsFromFP());
+#ifdef _DEBUG
+        strip.display();
+#endif
         printedStrips.push_back(FlightPlanSelectASEL().GetCallsign());
         return;
     }

@@ -33,7 +33,6 @@ public:
 	void print(); // prints strip out to paper
 #ifdef _DEBUG
 	void display(); // displays strip in window
-#endif // _DEBUG
-
+#endif
 };
 
