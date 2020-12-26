@@ -55,4 +55,15 @@ void CStripMakerPlugIn::OnGetTagItem(EuroScopePlugIn::CFlightPlan FlightPlan,
         }
         return;
     }
+void CStripMakerPlugIn::OnFunctionCall(int FunctionId,
+    const char* sItemString,
+    POINT Pt,
+    RECT Area) {
+    switch (FunctionId) {
+    case TAG_FUNC_PRINT_STRIP:
+        flightStrip strip(plugInSettings::getTypes()[getStripType()], getFieldsFromFP());
+        printedStrips.push_back(FlightPlanSelectASEL().GetCallsign());
+        return;
+    }
+}
 }
