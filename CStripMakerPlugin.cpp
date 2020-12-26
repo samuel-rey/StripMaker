@@ -72,4 +72,72 @@ void CStripMakerPlugIn::OnFunctionCall(int FunctionId,
 std::vector<stripType>::size_type CStripMakerPlugIn::getStripType() {
     return 0;
 }
+
+std::vector<std::string> CStripMakerPlugIn::getFieldsFromFP() {
+    std::vector <std::string> obtainedFieldText;
+    EuroScopePlugIn::CFlightPlan fp = FlightPlanSelectASEL();
+    for (int i = 0; i < 13; i++) {
+        switch (i) {
+        case FIELD_CALLSIGN: {
+            if (fp.GetFlightPlanData().GetCommunicationType() == *"v" || fp.GetFlightPlanData().GetCommunicationType() == *"? ") {
+                obtainedFieldText[i] = fp.GetCallsign();
+            }
+            else {
+                std::string commType(1, fp.GetFlightPlanData().GetCommunicationType());
+                obtainedFieldText[i] = fp.GetCallsign(); obtainedFieldText[i] += "/"; obtainedFieldText[i] += commType;
+            }
+            break;
+        }
+        case FIELD_PHONETIC_CALLSIGN: {
+            std::string callsign = fp.GetCallsign();
+            obtainedFieldText[i] = Callsigns->getCallsign(callsign.substr(0, 3));
+            break;
+        }
+        case FIELD_AIRCRAFT_TYPE: {
+            std::string wakeCategory(1, fp.GetFlightPlanData().GetAircraftWtc());
+            obtainedFieldText[i] = fp.GetFlightPlanData().GetAircraftFPType(); obtainedFieldText[i] += "/"; obtainedFieldText[i] += wakeCategory;
+            break;
+        }
+        case FIELD_SQWAWK:
+            obtainedFieldText[i] = fp.GetControllerAssignedData().GetSquawk();
+            break;
+        case FIELD_TAS:
+            obtainedFieldText[i] = fp.GetFlightPlanData().GetTrueAirspeed();
+            break;
+        case FIELD_RFL:
+            if (GetTransitionAltitude() > fp.GetFinalAltitude()) {
+                obtainedFieldText[i] = "A0" + std::to_string(fp.GetFinalAltitude() / 100);
+            }
+            else if (fp.GetFinalAltitude() / 100 < 100) {
+                obtainedFieldText[i] = "F0" + std::to_string(fp.GetFinalAltitude() / 100);
+            }
+            else {
+                obtainedFieldText[i] = "F"+ std::to_string(fp.GetFinalAltitude() / 100);
+            }
+            break;
+        case FIELD_RULES:
+            obtainedFieldText[i] = fp.GetFlightPlanData().GetPlanType();
+            break;
+        case FIELD_SLOT:
+            break;
+        case FIELD_EDT:
+            obtainedFieldText[i] = fp.GetFlightPlanData().GetEstimatedDepartureTime();
+            break;
+        case FIELD_ADEP:
+            obtainedFieldText[i] = fp.GetFlightPlanData().GetOrigin();
+            break;
+        case FIELD_ROUTE:
+            obtainedFieldText[i] = fp.GetFlightPlanData().GetRoute();
+            break;
+        case FIELD_ADES:
+            obtainedFieldText[i] = fp.GetFlightPlanData().GetDestination();
+            break;
+        case FIELD_ADEPROUTE:
+            obtainedFieldText[i] = fp.GetFlightPlanData().GetOrigin(); obtainedFieldText[i] = " "; obtainedFieldText[i] = fp.GetFlightPlanData().GetRoute();
+            break;
+        default:
+            obtainedFieldText[i] = "PLACEHOLDER";
+        }
+    }
+    return obtainedFieldText;
 }

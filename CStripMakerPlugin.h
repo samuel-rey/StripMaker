@@ -26,6 +26,9 @@ public:
     void printMessage(std::string message) {
         DisplayUserMessage("Message", "StripMaker", message.c_str(),TRUE,FALSE,FALSE,FALSE,FALSE);
     }
+
     // gets the required strip type according to type of flight and current strips in use
     std::vector<stripType>::size_type getStripType();
+    // gets all the possible fields for a strip, formats them accordingly, and returns them in a string vector.
+    std::vector<std::string> getFieldsFromFP();
 };
