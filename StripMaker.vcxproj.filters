@@ -30,6 +30,12 @@
     <ClCompile Include="flightStrip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="constant.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CallsignLookup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="StripMaker.def">
@@ -62,6 +68,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="flightStrip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CallsignLookup.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
