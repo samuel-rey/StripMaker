@@ -48,10 +48,10 @@ void CStripMakerPlugIn::OnGetTagItem(EuroScopePlugIn::CFlightPlan FlightPlan,
         return;
     case TAG_ITEM_PRINT_STATUS:
         if (!(std::find(printedStrips.begin(), printedStrips.end(), FlightPlan.GetCallsign()) == printedStrips.end())) {
-            strcpy(sItemString, "PRINTED");
+            strcpy_s(sItemString, 16, "PRINTED");
         }
         else {
-            strcpy(sItemString, "PRINT");
+            strcpy_s(sItemString, 16, "PRINT");
         }
         return;
     }
