@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "loadSettings.h"
 //#include <spdlog/logger.h>
 
