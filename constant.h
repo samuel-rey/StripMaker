@@ -5,6 +5,7 @@ const int TAG_ITEM_PRINT_STATUS = 100;
 const int TAG_FUNC_PRINT_STRIP = 101;
 
 // field types codes
+const int FIELDS_TOTAL = 13;
 const int FIELD_CALLSIGN = 0;
 const int FIELD_PHONETIC_CALLSIGN = 1;
 const int FIELD_AIRCRAFT_TYPE = 2;
