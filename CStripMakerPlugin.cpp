@@ -112,7 +112,7 @@ std::vector<std::string> CStripMakerPlugIn::getFieldsFromFP() {
             obtainedFieldText[i] = fp.GetControllerAssignedData().GetSquawk();
             break;
         case FIELD_TAS:
-            obtainedFieldText[i] = fp.GetFlightPlanData().GetTrueAirspeed();
+            obtainedFieldText[i] = "N" + std::to_string(fp.GetFlightPlanData().GetTrueAirspeed());
             break;
         case FIELD_RFL:
             if (GetTransitionAltitude() > fp.GetFinalAltitude()) {
