@@ -143,7 +143,7 @@ std::vector<std::string> CStripMakerPlugIn::getFieldsFromFP() {
             obtainedFieldText[i] = fp.GetFlightPlanData().GetDestination();
             break;
         case FIELD_ADEPROUTE:
-            obtainedFieldText[i] = fp.GetFlightPlanData().GetOrigin(); obtainedFieldText[i] = " "; obtainedFieldText[i] = fp.GetFlightPlanData().GetRoute();
+            obtainedFieldText[i] = fp.GetFlightPlanData().GetOrigin(); obtainedFieldText[i] += " "; obtainedFieldText[i] += fp.GetFlightPlanData().GetRoute();
             break;
         default:
             obtainedFieldText[i] = "PLACEHOLDER";
