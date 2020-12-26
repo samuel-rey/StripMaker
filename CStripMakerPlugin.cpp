@@ -63,6 +63,11 @@ void CStripMakerPlugIn::OnFunctionCall(int FunctionId,
     RECT Area) {
     switch (FunctionId) {
     case TAG_FUNC_PRINT_STRIP:
+#ifndef _DEBUG
+        if (!(std::find(printedStrips.begin(), printedStrips.end(), FlightPlanSelectASEL().GetCallsign()) == printedStrips.end())) {
+            return;
+        }
+#endif // _DEBUG
         flightStrip strip(plugInSettings::getTypes()[getStripType()], getFieldsFromFP());
         printedStrips.push_back(FlightPlanSelectASEL().GetCallsign());
         return;
