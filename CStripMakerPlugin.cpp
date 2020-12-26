@@ -10,6 +10,7 @@ CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILI
 {
 	auto logger = spdlog::basic_logger_mt("StripMaker", "StripMaker/logs/log.txt");
 	logger->info("StripMaker plugin starting up...");
-	//loadSettings();
+	plugInSettings::loadSettings();
+	logger->info("Succesfully loaded {} strip types", plugInSettings::loadedTypes.size());
 
 }

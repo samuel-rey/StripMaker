@@ -3,9 +3,7 @@
 #include <string>
 #include <vector>
 
-class plugInSettings {
-private:
-	std::vector<stripType> m_types;
-public:
-	plugInSettings();// the constructor. 
-};
+namespace plugInSettings {
+	void loadSettings();
+	std::vector<stripType> loadedTypes;
+}
