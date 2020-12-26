@@ -6,6 +6,7 @@
 #include "loadSettings.h"
 #include "constant.h"
 #include <filesystem>
+#include <algorithm>
 
 std::shared_ptr<spdlog::logger> logger; // local instance of logger
 CCallsignLookup* Callsigns = nullptr; // loaded phonetic callsigns
@@ -85,6 +86,7 @@ std::vector<std::string> CStripMakerPlugIn::getFieldsFromFP() {
     std::vector <std::string> obtainedFieldText;
     EuroScopePlugIn::CFlightPlan fp = FlightPlanSelectASEL();
     for (int i = 0; i < 13; i++) {
+        obtainedFieldText.push_back(std::string());
         switch (i) {
         case FIELD_CALLSIGN: {
             if (fp.GetFlightPlanData().GetCommunicationType() == *"v" || fp.GetFlightPlanData().GetCommunicationType() == *"? ") {
