@@ -5,5 +5,5 @@
 
 namespace plugInSettings {
 	void loadSettings();
-	std::vector<stripType> loadedTypes;
+	std::vector<stripType> getTypes();
 }

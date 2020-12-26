@@ -3,9 +3,11 @@
 //#include <spdlog/logger.h>
 
 // loads stripTypes defined in settings file and other settings such as printer into. Not yet implemented. For now, loads hard-wired settings (just 1 strip type: UKDeparture)
+
+std::vector<stripType> loadedTypes;
+
 namespace plugInSettings {
 	void loadSettings() {
-		std::vector<stripType> loadedTypes;
 		loadedTypes.push_back(stripType());
 		loadedTypes[0].stripName = "UKDeparture";
 		loadedTypes[0].stripTemplate = CImg<unsigned char>("StripMaker/templates/ukdeparture.bmp");
@@ -17,5 +19,8 @@ namespace plugInSettings {
 			loadedTypes[0].fields[i].fieldYLocation = ylocation[i];
 			loadedTypes[0].fields[i].fieldHeight = fieldHeight[i];
 		}
+	}
+	std::vector<stripType> getTypes() {
+		return loadedTypes;
 	}
 }
