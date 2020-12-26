@@ -1,14 +1,11 @@
 #pragma once
 #include <EuroScopePlugIn.h>
-#include <spdlog/spdlog.h>
 #include <string>
 
 #define MY_PLUGIN_NAME      "StripMaker"
 #define MY_PLUGIN_VERSION   "Alpha 0.1.0"
 #define MY_PLUGIN_DEVELOPER "Samuel Rey"
 #define MY_PLUGIN_COPYRIGHT "GPL v3"
-
-std::shared_ptr<spdlog::logger> logger;
 
 class CStripMakerPlugIn :
     public EuroScopePlugIn::CPlugIn
