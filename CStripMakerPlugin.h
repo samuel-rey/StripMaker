@@ -18,7 +18,7 @@ public:
     //virtual void OnFunctionCall(int FunctionId, const char* sItemString, POINT Pt, RECT Area);
 
     //---OnGetTagItem------------------------------------------
-    //virtual void OnGetTagItem(EuroScopePlugIn::CFlightPlan FlightPlan, EuroScopePlugIn::CRadarTarget RadarTarget, int ItemCode, int TagData, char sItemString[16], int* pColorCode, COLORREF* pRGB, double* pFontSize);
+    virtual void OnGetTagItem(EuroScopePlugIn::CFlightPlan FlightPlan, EuroScopePlugIn::CRadarTarget RadarTarget, int ItemCode, int TagData, char sItemString[16], int* pColorCode, COLORREF* pRGB, double* pFontSize);
 
     //Calls the DisplayUserMessage function to print on the Message channel
     void printMessage(std::string message) {

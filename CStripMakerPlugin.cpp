@@ -8,6 +8,7 @@
 #include <filesystem>
 
 std::shared_ptr<spdlog::logger> logger;
+CCallsignLookup* Callsigns = nullptr;
 
 CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILITY_CODE, MY_PLUGIN_NAME, MY_PLUGIN_VERSION, MY_PLUGIN_DEVELOPER, MY_PLUGIN_COPYRIGHT)
 {
@@ -21,5 +22,17 @@ CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILI
 	plugInSettings::loadSettings();
 	logger->info("Succesfully loaded {} strip types", plugInSettings::getTypes().size());
 
+	// register ES tag items & functions
+	RegisterTagItemType("Print status", TAG_ITEM_PRINT_STATUS);
+	RegisterTagItemFunction("Print strip", TAG_FUNC_PRINT_STRIP);
+
+	// load phonetic callsings
+	if (Callsigns == nullptr)
+		Callsigns = new CCallsignLookup();
+	if (std::filesystem::exists("ICAO_Airlines.txt")) {
+		Callsigns->readFile("ICAO_Airlines.txt");
+	}
+    
+}
 
 }
