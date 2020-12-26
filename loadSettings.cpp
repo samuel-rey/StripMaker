@@ -15,6 +15,7 @@ namespace plugInSettings {
 		int ylocation[] = { 68 ,45 ,1  ,114,418,62 ,92 ,1 ,121,0,0 ,157,95 };
 		int fieldHeight[] = { 44 ,22 ,22 ,22 ,22 ,22 ,22 ,22,22 ,0,0 ,22,22 };
 		for (int i = 0; i < 12; i++) {
+			loadedTypes[0].fields.push_back(stripField());
 			loadedTypes[0].fields[i].fieldXLocation = xlocation[i];
 			loadedTypes[0].fields[i].fieldYLocation = ylocation[i];
 			loadedTypes[0].fields[i].fieldHeight = fieldHeight[i];
