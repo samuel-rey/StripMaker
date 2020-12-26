@@ -10,7 +10,7 @@
 
 std::shared_ptr<spdlog::logger> logger; // local instance of logger
 CCallsignLookup* Callsigns = nullptr; // loaded phonetic callsigns
-std::vector<std::string> printedStrips;
+std::vector<std::string> printedStrips; // contains list of already printed strips TODO:
 
 CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILITY_CODE, MY_PLUGIN_NAME, MY_PLUGIN_VERSION, MY_PLUGIN_DEVELOPER, MY_PLUGIN_COPYRIGHT)
 {
@@ -36,7 +36,7 @@ CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILI
 	}
 }
 
-void CStripMakerPlugIn::OnGetTagItem(EuroScopePlugIn::CFlightPlan FlightPlan,
+void CStripMakerPlugIn::OnGetTagItem(EuroScopePlugIn::CFlightPlan FlightPlan, // returns TAG Item values for each TAG Item
     EuroScopePlugIn::CRadarTarget RadarTarget,
     int ItemCode,
     int TagData,
@@ -47,39 +47,39 @@ void CStripMakerPlugIn::OnGetTagItem(EuroScopePlugIn::CFlightPlan FlightPlan,
     switch (ItemCode) {
     default:
         return;
-    case TAG_ITEM_PRINT_STATUS:
-        if (!(std::find(printedStrips.begin(), printedStrips.end(), FlightPlan.GetCallsign()) == printedStrips.end())) {
+    case TAG_ITEM_PRINT_STATUS: 
+        if (!(std::find(printedStrips.begin(), printedStrips.end(), FlightPlan.GetCallsign()) == printedStrips.end())) { // if the strip has already already been printed, return "PRINTED"
             strcpy_s(sItemString, 16, "PRINTED");
         }
-        else {
-            strcpy_s(sItemString, 16, "PRINT");
+        else {// otherwise, return "PRINT"
+            strcpy_s(sItemString, 16, "PRINT"); 
         }
         return;
     }
 }
 
-void CStripMakerPlugIn::OnFunctionCall(int FunctionId,
+void CStripMakerPlugIn::OnFunctionCall(int FunctionId, // handles TAG Item functions
     const char* sItemString,
     POINT Pt,
     RECT Area) {
     switch (FunctionId) {
-    case TAG_FUNC_PRINT_STRIP:
-#ifndef _DEBUG
-        if (!(std::find(printedStrips.begin(), printedStrips.end(), FlightPlanSelectASEL().GetCallsign()) == printedStrips.end())) {
+    case TAG_FUNC_PRINT_STRIP: 
+#ifndef _DEBUG 
+        if (!(std::find(printedStrips.begin(), printedStrips.end(), FlightPlanSelectASEL().GetCallsign()) == printedStrips.end())) { // if the strip has already been printed, don't execute the function
             return;
         }
 #endif // _DEBUG
-        flightStrip strip(plugInSettings::getTypes()[getStripType()], getFieldsFromFP());
+        flightStrip strip(plugInSettings::getTypes()[getStripType()], getFieldsFromFP()); // create a strip of the correct type, with the gathered FP info
 #ifdef _DEBUG
-        strip.display();
+        strip.display(); // display the strip in a window
 #endif
-        printedStrips.push_back(FlightPlanSelectASEL().GetCallsign());
+        printedStrips.push_back(FlightPlanSelectASEL().GetCallsign()); // add the aircraft to the list of printed strips
         return;
     }
 }
 
-std::vector<stripType>::size_type CStripMakerPlugIn::getStripType() {
-    return 0;
+std::vector<stripType>::size_type CStripMakerPlugIn::getStripType() { 
+    return 0; // for now, we only have one, hardwired, strip type. so that's the correct strip type to use.
 }
 
 std::vector<std::string> CStripMakerPlugIn::getFieldsFromFP() {
