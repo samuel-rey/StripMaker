@@ -2,10 +2,10 @@
 EuroScope plugin that creates and prints out customizable Flight Progress Strips
 
 # Features
--Realistic generation of flight strips
--Integrated into EuroScope via a TAG Item
--Customizable strip formats (Not yet implemented)
--Works with ESC/POS-capable printers (Not yet implemented)
+- Realistic generation of flight strips
+- Integrated into EuroScope via a TAG Item
+- Customizable strip formats (Not yet implemented)
+- Works with ESC/POS-capable printers (Not yet implemented)
 
 # Status
 Currently, the plugin is able to generate strips for one format: UK Departures. Support for other (and user-defined) formats will be implemented down the line. Also in development is the printer integration; if you wish to print strips generated with the program, you can use the python-escpos library as a temporary work-around.
