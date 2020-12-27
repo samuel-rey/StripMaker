@@ -85,7 +85,7 @@ std::vector<stripType>::size_type CStripMakerPlugIn::getStripType() { // returns
 std::vector<std::string> CStripMakerPlugIn::getFieldsFromFP() { // gets the fields to fill in the strip from ES and formats them correctly
     std::vector <std::string> obtainedFieldText;
     EuroScopePlugIn::CFlightPlan fp = FlightPlanSelectASEL();
-    for (int i = 0; i < 13; i++) {
+    for (int i = 0; i < FIELDS_TOTAL; i++) {
         obtainedFieldText.push_back(std::string()); // initialize a string to be filled in the switch statement
         switch (i) {
         case FIELD_CALLSIGN: {
