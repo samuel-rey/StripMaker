@@ -78,21 +78,21 @@ void CStripMakerPlugIn::OnFunctionCall(int FunctionId, // handles TAG Item funct
     }
 }
 
-std::vector<stripType>::size_type CStripMakerPlugIn::getStripType() { 
+std::vector<stripType>::size_type CStripMakerPlugIn::getStripType() { // returns correct strip type, according to the flight type
     return 0; // for now, we only have one, hardwired, strip type. so that's the correct strip type to use.
 }
 
-std::vector<std::string> CStripMakerPlugIn::getFieldsFromFP() {
+std::vector<std::string> CStripMakerPlugIn::getFieldsFromFP() { // gets the fields to fill in the strip from ES and formats them correctly
     std::vector <std::string> obtainedFieldText;
     EuroScopePlugIn::CFlightPlan fp = FlightPlanSelectASEL();
     for (int i = 0; i < 13; i++) {
-        obtainedFieldText.push_back(std::string());
+        obtainedFieldText.push_back(std::string()); // initialize a string to be filled in the switch statement
         switch (i) {
         case FIELD_CALLSIGN: {
-            if (fp.GetFlightPlanData().GetCommunicationType() == *"v" || fp.GetFlightPlanData().GetCommunicationType() == *"? ") {
+            if (fp.GetFlightPlanData().GetCommunicationType() == *"v" || fp.GetFlightPlanData().GetCommunicationType() == *"? ") { // if the communication type is voice or unknown, return the callsign
                 obtainedFieldText[i] = fp.GetCallsign();
             }
-            else {
+            else { // otherwise, append the communication type
                 std::string commType(1, fp.GetFlightPlanData().GetCommunicationType());
                 obtainedFieldText[i] = fp.GetCallsign(); obtainedFieldText[i] += "/"; obtainedFieldText[i] += commType;
             }
@@ -100,7 +100,7 @@ std::vector<std::string> CStripMakerPlugIn::getFieldsFromFP() {
         }
         case FIELD_PHONETIC_CALLSIGN: {
             std::string callsign = fp.GetCallsign();
-            obtainedFieldText[i] = Callsigns->getCallsign(callsign.substr(0, 3));
+            obtainedFieldText[i] = Callsigns->getCallsign(callsign.substr(0, 3)); // get callsign from CallsignLookup
             break;
         }
         case FIELD_AIRCRAFT_TYPE: {
@@ -115,13 +115,14 @@ std::vector<std::string> CStripMakerPlugIn::getFieldsFromFP() {
             obtainedFieldText[i] = "N" + std::to_string(fp.GetFlightPlanData().GetTrueAirspeed());
             break;
         case FIELD_RFL:
-            if (GetTransitionAltitude() > fp.GetFinalAltitude()) {
+            // convert the altitude in feet to ICAO format
+            if (GetTransitionAltitude() > fp.GetFinalAltitude()) { // if we have an altitude, and it's below TL, the ICAO format is A0 then hundreds of feet
                 obtainedFieldText[i] = "A0" + std::to_string(fp.GetFinalAltitude() / 100);
             }
-            else if (fp.GetFinalAltitude() / 100 < 100) {
+            else if (fp.GetFinalAltitude() / 100 < 100) { // if we have a flight level, and it's below FL100, add a 0 before the hundreds of feet
                 obtainedFieldText[i] = "F0" + std::to_string(fp.GetFinalAltitude() / 100);
             }
-            else {
+            else { // otherwise, ICAO format is F then hundreds of feet
                 obtainedFieldText[i] = "F"+ std::to_string(fp.GetFinalAltitude() / 100);
             }
             break;
@@ -142,7 +143,7 @@ std::vector<std::string> CStripMakerPlugIn::getFieldsFromFP() {
         case FIELD_ADES:
             obtainedFieldText[i] = fp.GetFlightPlanData().GetDestination();
             break;
-        case FIELD_ADEPROUTE:
+        case FIELD_ADEPROUTE: // used for strips that need both combined
             obtainedFieldText[i] = fp.GetFlightPlanData().GetOrigin(); obtainedFieldText[i] += " "; obtainedFieldText[i] += fp.GetFlightPlanData().GetRoute();
             break;
         default:
