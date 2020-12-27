@@ -5,7 +5,7 @@
 #include "flightStrip.h"
 
 #define MY_PLUGIN_NAME      "StripMaker"
-#define MY_PLUGIN_VERSION   "Alpha 0.1.0"
+#define MY_PLUGIN_VERSION   "0.1.0-alpha"
 #define MY_PLUGIN_DEVELOPER "Samuel Rey"
 #define MY_PLUGIN_COPYRIGHT "GPL v3"
 
