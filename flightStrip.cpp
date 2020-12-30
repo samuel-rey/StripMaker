@@ -19,7 +19,7 @@ void flightStrip::applyTextToFields() { // takes the stripContents and writes th
 	}
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void flightStrip::display() { // opens a window with the generated strip and saves it to disk for debug purposes
 	type.stripTemplate.save("StripMaker/strip.bmp");
 	CImgDisplay main_disp(type.stripTemplate, "Flight Strip",0);
@@ -27,4 +27,4 @@ void flightStrip::display() { // opens a window with the generated strip and sav
 		main_disp.wait();
 	}
 }
-#endif
+//#endif

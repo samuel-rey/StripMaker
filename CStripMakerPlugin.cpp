@@ -70,9 +70,9 @@ void CStripMakerPlugIn::OnFunctionCall(int FunctionId, // handles TAG Item funct
         }
 #endif // _DEBUG
         flightStrip strip(plugInSettings::getTypes()[getStripType()], getFieldsFromFP()); // create a strip of the correct type, with the gathered FP info
-#ifdef _DEBUG
+//#ifdef _DEBUG
         strip.display(); // display the strip in a window
-#endif
+//#endif
         printedStrips.push_back(FlightPlanSelectASEL().GetCallsign()); // add the aircraft to the list of printed strips
         return;
     }
