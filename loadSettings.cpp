@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "loadSettings.h"
-//#include <spdlog/logger.h>
+//#include "logger.h"
 
 // loads stripTypes defined in settings file and other settings such as printer into. Not yet implemented. For now, loads hard-wired settings (just 1 strip type: UKDeparture)
 

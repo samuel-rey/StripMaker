@@ -1,29 +1,21 @@
 #include "pch.h"
 #include "CStripMakerPlugin.h"
-#include <spdlog/spdlog.h>
-#include <spdlog/sinks/basic_file_sink.h>
+#include "logger.h"
 #include "CallsignLookup.hpp"
 #include "loadSettings.h"
 #include "constant.h"
 #include <filesystem>
 #include <algorithm>
 
-std::shared_ptr<spdlog::logger> logger; // local instance of logger
+// logger-related variables
+bool Logger::ENABLED;
+std::string Logger::DLL_PATH;
+
 CCallsignLookup* Callsigns = nullptr; // loaded phonetic callsigns
 std::vector<std::string> printedStrips; // contains list of already printed strips TODO:
 
 CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILITY_CODE, MY_PLUGIN_NAME, MY_PLUGIN_VERSION, MY_PLUGIN_DEVELOPER, MY_PLUGIN_COPYRIGHT)
 {
-	// set up logger
-	auto logger = spdlog::basic_logger_mt("StripMaker", "StripMaker/logs/log.txt");
-	spdlog::flush_every(std::chrono::seconds(5));
-	spdlog::flush_on(spdlog::level::err);
-
-	// load plugin settings
-	logger->info("StripMaker plugin starting up...");
-	plugInSettings::loadSettings();
-	logger->info("Succesfully loaded {} strip types", plugInSettings::getTypes().size());
-
 	// register ES tag items & functions
 	RegisterTagItemType("Print status", TAG_ITEM_PRINT_STATUS);
 	RegisterTagItemFunction("Print strip", TAG_FUNC_PRINT_STRIP);
@@ -34,6 +26,14 @@ CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILI
 	if (std::filesystem::exists("ICAO_Airlines.txt")) {
 		Callsigns->readFile("ICAO_Airlines.txt");
 	}
+    char DllPathFile[_MAX_PATH];
+    std::string DllPath;
+    GetModuleFileNameA(HINSTANCE(&__ImageBase), DllPathFile, sizeof(DllPathFile));
+    DllPath = DllPathFile;
+    DllPath.resize(DllPath.size() - strlen("StripMaker.dll"));
+    Logger::DLL_PATH = DllPath;
+    Logger::ENABLED = TRUE;
+    Logger::info("Loaded Stripmaker plugin successfully");
 }
 
 void CStripMakerPlugIn::OnGetTagItem(EuroScopePlugIn::CFlightPlan FlightPlan, // returns TAG Item values for each TAG Item
