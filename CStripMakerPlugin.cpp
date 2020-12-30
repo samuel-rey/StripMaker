@@ -16,6 +16,9 @@ std::vector<std::string> printedStrips; // contains list of already printed stri
 
 CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILITY_CODE, MY_PLUGIN_NAME, MY_PLUGIN_VERSION, MY_PLUGIN_DEVELOPER, MY_PLUGIN_COPYRIGHT)
 {
+    // load plugin settings
+    plugInSettings::loadSettings();
+
 	// register ES tag items & functions
 	RegisterTagItemType("Print status", TAG_ITEM_PRINT_STATUS);
 	RegisterTagItemFunction("Print strip", TAG_FUNC_PRINT_STRIP);
