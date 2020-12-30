@@ -12,7 +12,7 @@ bool Logger::ENABLED;
 std::string Logger::DLL_PATH;
 
 CCallsignLookup* Callsigns = nullptr; // loaded phonetic callsigns
-std::vector<std::string> printedStrips; // contains list of already printed strips TODO:
+std::vector<std::string> printedStrips; // contains list of already printed strips TODO: Delete old disconnected strips
 
 CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILITY_CODE, MY_PLUGIN_NAME, MY_PLUGIN_VERSION, MY_PLUGIN_DEVELOPER, MY_PLUGIN_COPYRIGHT)
 {
