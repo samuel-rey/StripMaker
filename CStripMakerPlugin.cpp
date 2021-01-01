@@ -1,29 +1,28 @@
 #include "pch.h"
 #include "CStripMakerPlugin.h"
-#include <spdlog/spdlog.h>
-#include <spdlog/sinks/basic_file_sink.h>
+#include "logger.h"
 #include "CallsignLookup.hpp"
 #include "loadSettings.h"
 #include "constant.h"
+#include "dllpath.h"
 #include <filesystem>
 #include <algorithm>
 
-std::shared_ptr<spdlog::logger> logger; // local instance of logger
+// logger-related variables
+bool Logger::ENABLED;
+std::string Logger::DLL_PATH;
+
 CCallsignLookup* Callsigns = nullptr; // loaded phonetic callsigns
-std::vector<std::string> printedStrips; // contains list of already printed strips TODO:
+std::vector<std::string> printedStrips; // contains list of already printed strips TODO: Delete old disconnected strips
 
 CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILITY_CODE, MY_PLUGIN_NAME, MY_PLUGIN_VERSION, MY_PLUGIN_DEVELOPER, MY_PLUGIN_COPYRIGHT)
 {
-	// set up logger
-	auto logger = spdlog::basic_logger_mt("StripMaker", "StripMaker/logs/log.txt");
-	spdlog::flush_every(std::chrono::seconds(5));
-	spdlog::flush_on(spdlog::level::err);
+    // set CImg exception mode to 0, this will disable CImg windows with errors as we're handling them ourselves
+    cimg_library::cimg::exception_mode(0);
 
-	// load plugin settings
-	logger->info("StripMaker plugin starting up...");
-	plugInSettings::loadSettings();
-	logger->info("Succesfully loaded {} strip types", plugInSettings::getTypes().size());
-
+    // load plugin settings
+    plugInSettings::loadSettings();
+    
 	// register ES tag items & functions
 	RegisterTagItemType("Print status", TAG_ITEM_PRINT_STATUS);
 	RegisterTagItemFunction("Print strip", TAG_FUNC_PRINT_STRIP);
@@ -31,9 +30,24 @@ CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILI
 	// load phonetic callsings
 	if (Callsigns == nullptr)
 		Callsigns = new CCallsignLookup();
-	if (std::filesystem::exists("ICAO_Airlines.txt")) {
-		Callsigns->readFile("ICAO_Airlines.txt");
+    //if (std::filesystem::exists(plugInSettings::customICAOlocation)) { // TODO: try to find phonetic callsigns in the custom location
+    //     Callsigns->readFile(plugInSettings::customICAOlocation); 
+    //}
+	/*else*/ 
+    if (std::filesystem::exists("DataFiles\\ICAO_Airlines.txt")) { // try to find phonetic callsigns in ES.exe/DataFiles/ - best option as it will update when controllers .callsign
+		Callsigns->readFile("DataFiles\\ICAO_Airlines.txt");
 	}
+    else if (std::filesystem::exists(plugInSettings::getDllPath().append("ICAO_Airlines.txt"))) { // else, try to find it in the StripMaker directory
+        Callsigns->readFile(plugInSettings::getDllPath().append("ICAO_Airlines.txt"));
+    }
+    else if (std::filesystem::exists("ICAO_Airlines.txt")) { // else, try to find it in the ES exe directory
+        Callsigns->readFile("ICAO_Airlines.txt");
+    }
+
+    // set up logger
+    Logger::DLL_PATH = plugInSettings::getDllPath();
+    Logger::ENABLED = TRUE;
+    Logger::info("Loaded Stripmaker plugin successfully");
 }
 
 void CStripMakerPlugIn::OnGetTagItem(EuroScopePlugIn::CFlightPlan FlightPlan, // returns TAG Item values for each TAG Item
@@ -70,9 +84,9 @@ void CStripMakerPlugIn::OnFunctionCall(int FunctionId, // handles TAG Item funct
         }
 #endif // _DEBUG
         flightStrip strip(plugInSettings::getTypes()[getStripType()], getFieldsFromFP()); // create a strip of the correct type, with the gathered FP info
-#ifdef _DEBUG
+//#ifdef _DEBUG
         strip.display(); // display the strip in a window
-#endif
+//#endif
         printedStrips.push_back(FlightPlanSelectASEL().GetCallsign()); // add the aircraft to the list of printed strips
         return;
     }

@@ -118,8 +118,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy /Y $(SolutionDir)$(Configuration)\$(ProjectName).dll C:\Users\Samuel\Documents\EuroScope\
-copy /Y $(SolutionDir)$(Configuration)\fmtd.dll C:\Users\Samuel\Documents\EuroScope\</Command>
+      <Command>copy /Y $(SolutionDir)$(Configuration)\$(ProjectName).dll C:\Users\Samuel\Documents\EuroScope\UK\Data\PlugIn\StripMaker</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy latest build to project folder</Message>
@@ -182,8 +181,7 @@ copy /Y $(SolutionDir)$(Configuration)\fmtd.dll C:\Users\Samuel\Documents\EuroSc
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy /Y $(SolutionDir)$(Configuration)\$(ProjectName).dll C:\Users\Samuel\Documents\EuroScope\
-copy /Y $(SolutionDir)$(Configuration)\fmt.dll C:\Users\Samuel\Documents\EuroScope\</Command>
+      <Command>copy /Y $(SolutionDir)$(Configuration)\$(ProjectName).dll C:\Users\Samuel\Documents\EuroScope\</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy latest build to project folder</Message>
@@ -218,6 +216,7 @@ copy /Y $(SolutionDir)$(Configuration)\fmt.dll C:\Users\Samuel\Documents\EuroSco
   <ItemGroup>
     <ClCompile Include="CallsignLookup.cpp" />
     <ClCompile Include="CStripMakerPlugin.cpp" />
+    <ClCompile Include="dllpath.cpp" />
     <ClCompile Include="flightStrip.cpp" />
     <ClCompile Include="loadSettings.cpp" />
     <ClCompile Include="pch.cpp">
@@ -236,9 +235,11 @@ copy /Y $(SolutionDir)$(Configuration)\fmt.dll C:\Users\Samuel\Documents\EuroSco
   <ItemGroup>
     <ClInclude Include="CallsignLookup.hpp" />
     <ClInclude Include="CStripMakerPlugin.h" />
+    <ClInclude Include="dllpath.h" />
     <ClInclude Include="flightStrip.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="loadSettings.h" />
+    <ClInclude Include="logger.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="StripMaker.h" />
