@@ -4,6 +4,7 @@
 #include "CallsignLookup.hpp"
 #include "loadSettings.h"
 #include "constant.h"
+#include "dllpath.h"
 #include <filesystem>
 #include <algorithm>
 
@@ -16,9 +17,12 @@ std::vector<std::string> printedStrips; // contains list of already printed stri
 
 CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILITY_CODE, MY_PLUGIN_NAME, MY_PLUGIN_VERSION, MY_PLUGIN_DEVELOPER, MY_PLUGIN_COPYRIGHT)
 {
+    // set CImg exception mode to 0, this will disable CImg windows with errors as we're handling them ourselves
+    cimg_library::cimg::exception_mode(0);
+
     // load plugin settings
     plugInSettings::loadSettings();
-
+    
 	// register ES tag items & functions
 	RegisterTagItemType("Print status", TAG_ITEM_PRINT_STATUS);
 	RegisterTagItemFunction("Print strip", TAG_FUNC_PRINT_STRIP);
@@ -26,15 +30,22 @@ CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILI
 	// load phonetic callsings
 	if (Callsigns == nullptr)
 		Callsigns = new CCallsignLookup();
-	if (std::filesystem::exists("ICAO_Airlines.txt")) {
-		Callsigns->readFile("ICAO_Airlines.txt");
+    //if (std::filesystem::exists(plugInSettings::customICAOlocation)) { // TODO: try to find phonetic callsigns in the custom location
+    //     Callsigns->readFile(plugInSettings::customICAOlocation); 
+    //}
+	/*else*/ 
+    if (std::filesystem::exists("DataFiles\\ICAO_Airlines.txt")) { // try to find phonetic callsigns in ES.exe/DataFiles/ - best option as it will update when controllers .callsign
+		Callsigns->readFile("DataFiles\\ICAO_Airlines.txt");
 	}
-    char DllPathFile[_MAX_PATH];
-    std::string DllPath;
-    GetModuleFileNameA(HINSTANCE(&__ImageBase), DllPathFile, sizeof(DllPathFile));
-    DllPath = DllPathFile;
-    DllPath.resize(DllPath.size() - strlen("StripMaker.dll"));
-    Logger::DLL_PATH = DllPath;
+    else if (std::filesystem::exists(plugInSettings::getDllPath().append("ICAO_Airlines.txt"))) { // else, try to find it in the StripMaker directory
+        Callsigns->readFile(plugInSettings::getDllPath().append("ICAO_Airlines.txt"));
+    }
+    else if (std::filesystem::exists("ICAO_Airlines.txt")) { // else, try to find it in the ES exe directory
+        Callsigns->readFile("ICAO_Airlines.txt");
+    }
+
+    // set up logger
+    Logger::DLL_PATH = plugInSettings::getDllPath();
     Logger::ENABLED = TRUE;
     Logger::info("Loaded Stripmaker plugin successfully");
 }

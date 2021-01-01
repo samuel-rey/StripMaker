@@ -36,6 +36,9 @@
     <ClCompile Include="CallsignLookup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="dllpath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="StripMaker.def">
@@ -74,6 +77,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dllpath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

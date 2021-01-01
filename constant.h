@@ -1,5 +1,6 @@
 #pragma once
 #include "pch.h"
+
 // ES tag and functions codes
 const int TAG_ITEM_PRINT_STATUS = 100;
 const int TAG_FUNC_PRINT_STRIP = 101;

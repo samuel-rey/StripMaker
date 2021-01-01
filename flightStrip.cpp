@@ -2,6 +2,7 @@
 #include "flightStrip.h"
 #include "constant.h"
 #include "loadSettings.h"
+#include "dllpath.h"
 
 flightStrip::flightStrip(stripType _Type, std::vector<std::string> fpContents) { // constructor. sets strip type and fills stripContents with those provided
 	type = _Type;
@@ -21,7 +22,12 @@ void flightStrip::applyTextToFields() { // takes the stripContents and writes th
 
 //#ifdef _DEBUG
 void flightStrip::display() { // opens a window with the generated strip and saves it to disk for debug purposes
-	type.stripTemplate.save("StripMaker/strip.bmp");
+	try {
+		type.stripTemplate.save(plugInSettings::getDllPath().append("strip.bmp").c_str());
+	}
+	catch (CImgIOException) {
+		MessageBox(GetActiveWindow(), std::string("Failed to save strip to ").append(plugInSettings::getDllPath()).append("\\strip.bmp").c_str(),NULL,MB_OK|MB_ICONERROR);
+	}
 	CImgDisplay main_disp(type.stripTemplate, "Flight Strip",0);
 	while (!main_disp.is_closed()) {
 		main_disp.wait();
