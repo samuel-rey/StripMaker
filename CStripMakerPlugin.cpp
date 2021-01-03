@@ -82,14 +82,19 @@ void CStripMakerPlugIn::OnFunctionCall(int FunctionId, // handles TAG Item funct
         if (!(std::find(printedStrips.begin(), printedStrips.end(), FlightPlanSelectASEL().GetCallsign()) == printedStrips.end())) { // if the strip has already been printed, don't execute the function
             return;
         }
-#endif // _DEBUG
-        flightStrip strip(plugInSettings::getTypes()[getStripType()], getFieldsFromFP()); // create a strip of the correct type, with the gathered FP info
-//#ifdef _DEBUG
-        strip.display(); // display the strip in a window
-//#endif
+#endif
+        makeStrip();
         printedStrips.push_back(FlightPlanSelectASEL().GetCallsign()); // add the aircraft to the list of printed strips
         return;
     }
+}
+
+void CStripMakerPlugIn::makeStrip() {
+    flightStrip strip(plugInSettings::getTypes()[getStripType()], getFieldsFromFP()); // create a strip of the correct type, with the gathered FP info
+//#ifdef _DEBUG
+    strip.display(); // display the strip in a window
+//#endif
+    return;
 }
 
 std::vector<stripType>::size_type CStripMakerPlugIn::getStripType() { // returns correct strip type, according to the flight type
