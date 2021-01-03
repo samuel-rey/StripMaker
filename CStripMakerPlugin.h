@@ -5,7 +5,7 @@
 #include "flightStrip.h"
 
 #define MY_PLUGIN_NAME      "StripMaker"
-#define MY_PLUGIN_VERSION   "0.1.0-alpha"
+#define MY_PLUGIN_VERSION   "0.1.0"
 #define MY_PLUGIN_DEVELOPER "Samuel Rey"
 #define MY_PLUGIN_COPYRIGHT "GPL v3"
 
@@ -26,6 +26,9 @@ public:
     void printMessage(std::string message) {
         DisplayUserMessage("Message", "StripMaker", message.c_str(),TRUE,FALSE,FALSE,FALSE,FALSE);
     }
+
+    //does all the necessary stuff to make and show/print a strip
+    void makeStrip();
 
     // gets the required strip type according to type of flight and current strips in use
     std::vector<stripType>::size_type getStripType();

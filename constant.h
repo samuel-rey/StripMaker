@@ -4,6 +4,8 @@
 // ES tag and functions codes
 const int TAG_ITEM_PRINT_STATUS = 100;
 const int TAG_FUNC_PRINT_STRIP = 101;
+const int TAG_FUNC_PRINT_MENU = 102;
+const int TAG_FUNC_PRINT_STRIP_FORCE = 103;
 
 // field types codes
 const int FIELDS_TOTAL = 13;
