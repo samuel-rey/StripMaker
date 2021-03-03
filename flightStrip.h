@@ -30,8 +30,6 @@ public:
 	std::vector<std::string> fieldContents;
 	flightStrip(stripType _Type, std::vector<std::string> fpContents); // constructor for this class. Creates instance of flightStrip with type 'type' and populates fieldContents with the info from 'fpContents'
 	void print(); // prints strip out to paper
-//#ifdef _DEBUG
 	void display(); // displays strip in window
-//#endif
 };
 

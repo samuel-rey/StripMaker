@@ -28,6 +28,9 @@ CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILI
 	RegisterTagItemFunction("Print strip", TAG_FUNC_PRINT_STRIP);
     RegisterTagItemFunction("Print menu", TAG_FUNC_PRINT_MENU);
     RegisterTagItemFunction("Print Strip (Force)", TAG_FUNC_PRINT_STRIP_FORCE);
+#ifdef _DEBUG
+    RegisterTagItemFunction("(Debug) Show strip", TAG_FUNC_SHOW_STRIP);
+#endif
 
 	// load phonetic callsings
 	if (Callsigns == nullptr)
@@ -80,33 +83,35 @@ void CStripMakerPlugIn::OnFunctionCall(int FunctionId, // handles TAG Item funct
     RECT Area) {
     switch (FunctionId) {
     case TAG_FUNC_PRINT_STRIP:
-#ifndef _DEBUG 
-        if (!(std::find(printedStrips.begin(), printedStrips.end(), FlightPlanSelectASEL().GetCallsign()) == printedStrips.end())) { // if the strip has already been printed, don't execute the function
-            return;
-        }
-#endif
-        makeStrip();
-        printedStrips.push_back(FlightPlanSelectASEL().GetCallsign()); // add the aircraft to the list of printed strips
+        makeStrip(NOFORCE, NOSHOW,PRINT);
         return;
-    
     case TAG_FUNC_PRINT_MENU:
         OpenPopupList(Area, "Print menu", 1);
         AddPopupListElement("Force print", "", TAG_FUNC_PRINT_STRIP_FORCE);
+#ifdef _DEBUG
+        AddPopupListElement("(Debug) Show strip", "", TAG_FUNC_SHOW_STRIP);
+#endif
         return;
     case TAG_FUNC_PRINT_STRIP_FORCE:
-        makeStrip();
-        if ((std::find(printedStrips.begin(), printedStrips.end(), FlightPlanSelectASEL().GetCallsign()) == printedStrips.end())) { // if the strip hasn't been printed, we'll have to add the aircraft to the list of printed strips
-            printedStrips.push_back(FlightPlanSelectASEL().GetCallsign());
-        }
+        makeStrip(FORCE,NOSHOW,PRINT);
+        return;
+    case TAG_FUNC_SHOW_STRIP:
+        makeStrip(FORCE,SHOW,NOPRINT);
         return;
     }
 }
 
-void CStripMakerPlugIn::makeStrip() {
-    flightStrip strip(plugInSettings::getTypes()[getStripType()], getFieldsFromFP()); // create a strip of the correct type, with the gathered FP info
-//#ifdef _DEBUG
-    strip.display(); // display the strip in a window
-//#endif
+void CStripMakerPlugIn::makeStrip(bool force, bool show, bool print) {
+    if ((std::find(printedStrips.begin(), printedStrips.end(), FlightPlanSelectASEL().GetCallsign()) == printedStrips.end()) || force) { // if the strip hasn't been printed, or we are in 'force' mode, print the strip and add it to the list.
+        printedStrips.push_back(FlightPlanSelectASEL().GetCallsign());
+        flightStrip strip(plugInSettings::getTypes()[getStripType()], getFieldsFromFP()); // create a strip of the correct type, with the gathered FP info
+        if (show) {
+            strip.display(); // display the strip if requested
+        }
+        if (print) {
+            //strip.print(); // print the strip if required
+        }
+    }
     return;
 }
 

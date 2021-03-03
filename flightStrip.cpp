@@ -20,7 +20,6 @@ void flightStrip::applyTextToFields() { // takes the stripContents and writes th
 	}
 }
 
-//#ifdef _DEBUG
 void flightStrip::display() { // opens a window with the generated strip and saves it to disk for debug purposes
 	try {
 		type.stripTemplate.save(plugInSettings::getDllPath().append("strip.bmp").c_str());
@@ -33,4 +32,3 @@ void flightStrip::display() { // opens a window with the generated strip and sav
 		main_disp.wait();
 	}
 }
-//#endif

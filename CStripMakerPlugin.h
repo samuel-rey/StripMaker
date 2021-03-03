@@ -28,7 +28,7 @@ public:
     }
 
     //does all the necessary stuff to make and show/print a strip
-    void makeStrip();
+    void makeStrip(bool force, bool show, bool print);
 
     // gets the required strip type according to type of flight and current strips in use
     std::vector<stripType>::size_type getStripType();
