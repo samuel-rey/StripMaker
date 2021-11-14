@@ -20,4 +20,12 @@ public:
 			file.close();
 		}
 	}
+	static void error(std::string message) {
+		if (Logger::ENABLED && Logger::DLL_PATH.length() > 0) {
+			std::ofstream file;
+			file.open(Logger::DLL_PATH + "StripMaker\\logs\\stripmaker.log", std::ofstream::out | std::ofstream::app);
+			file << "ERROR: " << message << std::endl;
+			file.close();
+		}
+	}
 };

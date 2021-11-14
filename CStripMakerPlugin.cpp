@@ -2,9 +2,8 @@
 #include "CStripMakerPlugin.h"
 #include "logger.h"
 #include "CallsignLookup.hpp"
-#include "loadSettings.h"
+#include "settings.h"
 #include "constant.h"
-#include "dllpath.h"
 #include <filesystem>
 #include <algorithm>
 
@@ -21,7 +20,8 @@ CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILI
     cimg_library::cimg::exception_mode(0);
 
     // load plugin settings
-    plugInSettings::loadSettings();
+    
+    settings.load();
     
 	// register ES tag items & functions
 	RegisterTagItemType("Print status", TAG_ITEM_PRINT_STATUS);
@@ -42,15 +42,15 @@ CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILI
     if (std::filesystem::exists("DataFiles\\ICAO_Airlines.txt")) { // try to find phonetic callsigns in ES.exe/DataFiles/ - best option as it will update when controllers .callsign
 		Callsigns->readFile("DataFiles\\ICAO_Airlines.txt");
 	}
-    else if (std::filesystem::exists(plugInSettings::getDllPath().append("ICAO_Airlines.txt"))) { // else, try to find it in the StripMaker directory
-        Callsigns->readFile(plugInSettings::getDllPath().append("ICAO_Airlines.txt"));
+    else if (std::filesystem::exists(settings.dllPath().append("ICAO_Airlines.txt"))) { // else, try to find it in the StripMaker directory
+        Callsigns->readFile(settings.dllPath().append("ICAO_Airlines.txt"));
     }
     else if (std::filesystem::exists("ICAO_Airlines.txt")) { // else, try to find it in the ES exe directory
         Callsigns->readFile("ICAO_Airlines.txt");
     }
 
     // set up logger
-    Logger::DLL_PATH = plugInSettings::getDllPath();
+    Logger::DLL_PATH = settings.dllPath();
     Logger::ENABLED = TRUE;
     Logger::info("Loaded Stripmaker plugin successfully");
 }
@@ -104,7 +104,7 @@ void CStripMakerPlugIn::OnFunctionCall(int FunctionId, // handles TAG Item funct
 void CStripMakerPlugIn::makeStrip(bool force, bool show, bool print) {
     if ((std::find(printedStrips.begin(), printedStrips.end(), FlightPlanSelectASEL().GetCallsign()) == printedStrips.end()) || force) { // if the strip hasn't been printed, or we are in 'force' mode, print the strip and add it to the list.
         printedStrips.push_back(FlightPlanSelectASEL().GetCallsign());
-        flightStrip strip(plugInSettings::getTypes()[getStripType()], getFieldsFromFP()); // create a strip of the correct type, with the gathered FP info
+        flightStrip strip(getStripType(), getFieldsFromFP()); // create a strip of the correct type, with the gathered FP info
         if (show) {
             strip.display(); // display the strip if requested
         }
@@ -116,7 +116,7 @@ void CStripMakerPlugIn::makeStrip(bool force, bool show, bool print) {
 }
 
 std::vector<stripType>::size_type CStripMakerPlugIn::getStripType() { // returns correct strip type, according to the flight type
-    return 0; // for now, we only have one, hardwired, strip type. so that's the correct strip type to use.
+    return TYPE_DEPARTURE; // for now, we only have one, hardwired, strip type. so that's the correct strip type to use.
 }
 
 std::vector<std::string> CStripMakerPlugIn::getFieldsFromFP() { // gets the fields to fill in the strip from ES and formats them correctly
@@ -145,7 +145,7 @@ std::vector<std::string> CStripMakerPlugIn::getFieldsFromFP() { // gets the fiel
             obtainedFieldText[i] = fp.GetFlightPlanData().GetAircraftFPType(); obtainedFieldText[i] += "/"; obtainedFieldText[i] += wakeCategory;
             break;
         }
-        case FIELD_SQWAWK:
+        case FIELD_SQUAWK:
             obtainedFieldText[i] = fp.GetControllerAssignedData().GetSquawk();
             break;
         case FIELD_TAS:

@@ -1,5 +1,8 @@
 #pragma once
-#include "CImg.h"
+#include "constant.h"
+#pragma warning(push, 0)
+#include <CImg.h>
+#pragma warning(pop)
 #include <string>
 #include <vector>
 #include <EuroScopePlugIn.h>
@@ -13,11 +16,17 @@ struct stripField {
 	int fieldHeight;
 };
 
-// a stripType is the settings for a particular strip. We can set which image is used as a template and where each field goes in that image.
+// a stripType is the settings for a particular strip of a particular situation, such as departure. We can set which image is used as a template and where each field goes in that image.
 struct stripType {
-	std::string stripName;
-	CImg<unsigned int> stripTemplate;
-	std::vector<stripField> fields;
+	std::string templateFile;
+	stripField fields[FIELDS_TOTAL];
+};
+
+// a stripSet is a set of types that all share a common theme. The user uses one stripSet when controlling w/ the plugin
+struct stripSet {
+	std::string setName;
+	std::string setDescription;
+	stripType type[TYPES_TOTAL];
 };
 
 // this contains all the flight data in the correct format and the strip data, that is, the template for the particular strip type. It also contains the functions for making the strip image.
@@ -26,9 +35,10 @@ class flightStrip
 private:
 	void applyTextToFields(); // takes the stripTemplate and applies the fieldContents to it according to the settings from its stripType
 public:
-	stripType type;
+	CImg<unsigned int> stripTemplate;
+	stripField fields[FIELDS_TOTAL];
 	std::vector<std::string> fieldContents;
-	flightStrip(stripType _Type, std::vector<std::string> fpContents); // constructor for this class. Creates instance of flightStrip with type 'type' and populates fieldContents with the info from 'fpContents'
+	flightStrip(int type, std::vector<std::string> fpContents); // constructor for this class. Creates instance of flightStrip with type 'type' and populates fieldContents with the info from 'fpContents'
 	void print(); // prints strip out to paper
 	void display(); // displays strip in window
 };

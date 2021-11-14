@@ -340,3 +340,5 @@ healthchecksdb
 
 # Release ZIP file
 bin/*.zip
+settings.txt
+bin/StripMaker/StripMaker.dll

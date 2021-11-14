@@ -9,6 +9,13 @@
 #define NOSHOW 0
 #define NOPRINT 0
 
+// stripTypes
+const int TYPES_TOTAL = 4;
+const int TYPE_DEPARTURE = 0;
+const int TYPE_ENROUTE = 1;
+const int TYPE_ARRIVAL = 2;
+const int TYPE_OVERFLIGHT = 3;
+
 // ES tag and functions codes
 const int TAG_ITEM_PRINT_STATUS = 100;
 const int TAG_FUNC_PRINT_STRIP = 101;
@@ -21,7 +28,7 @@ const int FIELDS_TOTAL = 13;
 const int FIELD_CALLSIGN = 0;
 const int FIELD_PHONETIC_CALLSIGN = 1;
 const int FIELD_AIRCRAFT_TYPE = 2;
-const int FIELD_SQWAWK = 3;
+const int FIELD_SQUAWK = 3;
 const int FIELD_TAS = 4;
 const int FIELD_RFL = 5;
 const int FIELD_RULES = 6;
