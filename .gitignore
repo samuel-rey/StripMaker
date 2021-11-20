@@ -338,8 +338,5 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
-# Release ZIP file
-bin/*.zip
-settings.txt
-bin/StripMaker/StripMaker.dll
-bin/StripMaker/StripMaker.dll
+# Releases
+bin/*
