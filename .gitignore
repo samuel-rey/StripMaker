@@ -342,3 +342,4 @@ healthchecksdb
 bin/*.zip
 settings.txt
 bin/StripMaker/StripMaker.dll
+bin/StripMaker/StripMaker.dll

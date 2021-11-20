@@ -22,6 +22,10 @@ struct stripType {
 	stripField fields[FIELDS_TOTAL];
 };
 
+// convert from type-index to type-name
+std::string typeToString(int type);
+int stringToType(std::string typeName);
+
 // a stripSet is a set of types that all share a common theme. The user uses one stripSet when controlling w/ the plugin
 struct stripSet {
 	std::string setName;

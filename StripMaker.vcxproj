@@ -227,6 +227,7 @@ xcopy /Y $(SolutionDir)templates\ $(SolutionDir)bin\StripMaker\templates\</Comma
     </ClCompile>
     <ClCompile Include="constant.h" />
     <ClCompile Include="settings.cpp" />
+    <ClCompile Include="ESHelper.cpp" />
     <ClCompile Include="StripMaker.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -236,6 +237,7 @@ xcopy /Y $(SolutionDir)templates\ $(SolutionDir)bin\StripMaker\templates\</Comma
   <ItemGroup>
     <ClInclude Include="CallsignLookup.hpp" />
     <ClInclude Include="CStripMakerPlugin.h" />
+    <ClInclude Include="ESHelper.h" />
     <ClInclude Include="flightStrip.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="logger.h" />
