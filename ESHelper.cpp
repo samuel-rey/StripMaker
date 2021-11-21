@@ -20,8 +20,6 @@ namespace ESHelper {
 	}
 
 	bool isNearFPAirport(EuroScopePlugIn::CFlightPlan flightPlan) {
-		int test = flightPlan.GetDistanceFromOrigin();
-		int test2 = flightPlan.GetDistanceToDestination();
 		if (flightPlan.GetDistanceFromOrigin() < 25 || flightPlan.GetDistanceToDestination() < 25) {
 			return true;
 		}
