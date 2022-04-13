@@ -29,14 +29,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -44,14 +44,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -218,9 +218,7 @@ xcopy /Y $(SolutionDir)templates\ $(SolutionDir)bin\StripMaker\templates\</Comma
   <ItemGroup>
     <ClCompile Include="CallsignLookup.cpp" />
     <ClCompile Include="CStripMakerPlugin.cpp" />
-    <ClCompile Include="dllpath.cpp" />
     <ClCompile Include="flightStrip.cpp" />
-    <ClCompile Include="loadSettings.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -228,6 +226,8 @@ xcopy /Y $(SolutionDir)templates\ $(SolutionDir)bin\StripMaker\templates\</Comma
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="constant.h" />
+    <ClCompile Include="settings.cpp" />
+    <ClCompile Include="ESHelper.cpp" />
     <ClCompile Include="StripMaker.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -237,13 +237,13 @@ xcopy /Y $(SolutionDir)templates\ $(SolutionDir)bin\StripMaker\templates\</Comma
   <ItemGroup>
     <ClInclude Include="CallsignLookup.hpp" />
     <ClInclude Include="CStripMakerPlugin.h" />
-    <ClInclude Include="dllpath.h" />
+    <ClInclude Include="ESHelper.h" />
     <ClInclude Include="flightStrip.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="loadSettings.h" />
     <ClInclude Include="logger.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="settings.h" />
     <ClInclude Include="StripMaker.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>

@@ -338,5 +338,6 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
-# Release ZIP file
-bin/*.zip
+# Releases
+bin/*
+builtin/templates/dev/*
