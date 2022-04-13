@@ -163,6 +163,10 @@ bool CStripMakerPlugIn::OnCompileCommand(const char* sCommandLine) {
 		settings = plugInSettings::settings();
 		settings.load();
 	}
+	else if (args.at(1) == "printerip" && args.size() == 3) {
+		settings.printerIP = args.at(2);
+		printMessage(settings.printerIP + " is now the printer IP");
+	}
 	else {
 		printMessage("Invalid command");
 	}

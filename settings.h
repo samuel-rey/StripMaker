@@ -33,6 +33,7 @@ namespace plugInSettings {
 		stripSet getStripSet(std::string setName);
 		std::vector<stripSet> getStripSets();
 		std::string dllPath();
+		std::string printerIP{"0.0.0.0"};
 	};
 }
 
