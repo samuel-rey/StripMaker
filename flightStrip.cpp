@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <exception>
 
+using namespace cimg_library;
+
 flightStrip::flightStrip(int type, std::vector<std::string> fpContents) { // constructor. sets strip type and fills stripContents with those provided
 	if (settings.currentStripSet.type[type].templateFile == "") {
 		std::string message = std::string("Cannot print strip as strip type ").append(typeToString(type)).append(" does not have a template file specified in the settings.");

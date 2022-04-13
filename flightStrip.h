@@ -7,8 +7,6 @@
 #include <vector>
 #include <EuroScopePlugIn.h>
 
-using namespace cimg_library;
-
 // a stripField is an individual field that will be filled out with info from the aircraft.
 struct stripField {
 	int fieldXLocation;
