@@ -9,9 +9,17 @@ using namespace cimg_library;
 
 flightStrip::flightStrip(int type, std::vector<std::string> fpContents) { // constructor. sets strip type and fills stripContents with those provided
 	if (settings.currentStripSet.type[type].templateFile == "") {
-		std::string message = std::string("Cannot print strip as strip type ").append(typeToString(type)).append(" does not have a template file specified in the settings.");
+		std::string message = std::string("Cannot create strip as strip type ").append(typeToString(type)).append(" does not have a template file specified in the settings.");
 		MessageBox(GetActiveWindow(), message.c_str(), NULL, MB_OK | MB_ICONERROR);
 		throw std::exception();
+	}
+	if (settings.currentStripSet.type[type].layoutFile == "") {
+		std::string message = std::string("Cannot create strip as strip type ").append(typeToString(type)).append(" does not have a layout file specified in the settings.");
+		MessageBox(GetActiveWindow(), message.c_str(), NULL, MB_OK | MB_ICONERROR);
+		throw std::exception();
+	}
+	else {
+		stripLayout = settings.currentStripSet.type[type].layoutFile;
 	}
 	
 	try {
