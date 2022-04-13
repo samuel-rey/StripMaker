@@ -67,6 +67,27 @@ namespace plugInSettings {
 						}
 					}
 				}
+				else if (keyword2 == "LAYOUT") {
+					if (!(fields.size() == 4)) {
+						logParseError(std::string("While loading settings, incorrect number of arguments for a strip template in line " + std::to_string(lineNumber)));
+						continue;
+					}
+					else {
+						stripSets.at(setIndex).type[stripType].layoutFile = fields.at(3);
+					}
+				}
+				else if (keyword2 == "VARS") { 
+					if (fields.size() <= 3) {
+						logParseError(std::string("While loading settings, incorrect number of arguments for strip variable declaration in line " + std::to_string(lineNumber)));
+						continue;
+					}
+					else {
+						for (int i{ 3 }; i < fields.size(); i++) {
+							stripSets.at(setIndex).type[stripType].vars.push_back(resolveType(fields.at(i)));
+						}
+
+					}
+				}
 				else if (fields.size() == 6) {
 					int field = resolveType(keyword2);
 					if (field == -1) { // field not found
@@ -164,7 +185,7 @@ namespace plugInSettings {
 			}) == stripSets.end());
 	}
 	bool settings::open() {
-		settingsfStream = std::ifstream{ dllPath().append("stripsets.txt") };
+		settingsfStream = std::ifstream{ dllPath().append("stripsets_intermec.txt") };
 		if (!settingsfStream) {
 			return false;
 		}
