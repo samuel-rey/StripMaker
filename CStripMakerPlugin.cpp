@@ -178,9 +178,6 @@ bool CStripMakerPlugIn::OnCompileCommand(const char* sCommandLine) {
 }
 
 void CStripMakerPlugIn::makeStrip(bool force, bool show, bool print, int stripType) {
-#ifdef _DEBUG
-	show = true;
-#endif
 	if (!stripPrinted(FlightPlanSelectASEL().GetCallsign()) || force) { // if the strip hasn't been printed, or we are in 'force' mode, print the strip and add it to the list.
 		try {
 			flightStrip strip(stripType, getFieldsFromFP()); // create a strip of the correct type, with the gathered FP info
@@ -188,7 +185,7 @@ void CStripMakerPlugIn::makeStrip(bool force, bool show, bool print, int stripTy
 				strip.display(); // display the strip if requested
 			}
 			if (print) {
-				//strip.print(); // print the strip if required
+				strip.print(); // print the strip if required
 			}
 		}
 		catch (std::exception) {

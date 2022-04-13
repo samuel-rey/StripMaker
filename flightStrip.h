@@ -43,6 +43,7 @@ public:
 	std::string stripLayout;
 	stripField fields[FIELDS_TOTAL];
 	std::vector<std::string> fieldContents;
+	std::vector<int> vars;
 	flightStrip(int type, std::vector<std::string> fpContents); // constructor for this class. Creates instance of flightStrip with type 'type' and populates fieldContents with the info from 'fpContents'
 	void print(); // prints strip out to paper
 	void display(); // displays strip in window

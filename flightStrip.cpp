@@ -4,6 +4,7 @@
 #include "settings.h"
 #include <algorithm>
 #include <exception>
+#include <ws2tcpip.h>
 
 using namespace cimg_library;
 
@@ -21,7 +22,6 @@ flightStrip::flightStrip(int type, std::vector<std::string> fpContents) { // con
 	else {
 		stripLayout = settings.currentStripSet.type[type].layoutFile;
 	}
-	
 	try {
 		CImg <unsigned int>newTemplate(settings.dllPath().append("\\templates\\").append(settings.currentStripSet.type[type].templateFile).c_str());	
 		stripTemplate = newTemplate;
@@ -36,6 +36,7 @@ flightStrip::flightStrip(int type, std::vector<std::string> fpContents) { // con
 		fieldContents.push_back(std::string());
 		fieldContents[i] = fpContents[i];
 	}
+	vars = settings.currentStripSet.type[type].vars;
 	applyTextToFields();
 }
 
@@ -57,6 +58,50 @@ void flightStrip::display() { // opens a window with the generated strip and sav
 	while (!main_disp.is_closed()) {
 		main_disp.wait();
 	}
+}
+
+void flightStrip::print() { // routine only for intermec printers
+	if (settings.printerIP == "0.0.0.0") {
+		MessageBox(GetActiveWindow(), "No printer IP specified in settings. Cannot print.", NULL, MB_OK | MB_ICONERROR);
+		return;
+	}
+	// open a TCP socket to printerIP on printerPort
+	SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (sock == INVALID_SOCKET) {
+		MessageBox(GetActiveWindow(), "Failed to open socket to printer.", NULL, MB_OK | MB_ICONERROR);
+		return;
+	}
+	sockaddr_in printerAddr;
+	printerAddr.sin_family = AF_INET;
+	printerAddr.sin_port = htons(settings.printerPort);
+	InetPton(AF_INET, settings.printerIP.c_str(), &printerAddr.sin_addr.s_addr);
+	if (connect(sock, (sockaddr*)&printerAddr, sizeof(printerAddr)) == SOCKET_ERROR) {
+		MessageBox(GetActiveWindow(), "Failed to connect to printer.", NULL, MB_OK | MB_ICONERROR);
+		return;
+	}
+	// to print, we first send "LAYOUT RUN <layoutFile>" to the printer via the TCP socket
+	std::string layoutCommand = std::string("LAYOUT RUN \"").append(stripLayout).append("\"");
+	if (send(sock, layoutCommand.c_str(), layoutCommand.length(), 0) == SOCKET_ERROR) {
+		MessageBox(GetActiveWindow(), "Failed to send layout command to printer.", NULL, MB_OK | MB_ICONERROR);
+		return;
+	}
+
+	// then, we need to pass the vars (fieldContents) to the printer in one single string
+	std::string varString;
+	varString.append("\x02"); // begin with ASCII STX
+	for (int i{ 0 }; i < vars.size(); i++) {
+		varString.append(fieldContents.at(vars.at(i))).append("\x0D"); // append the fieldContents for the corresponding field to the string then terminate with carriage return
+	}
+	varString.append("\x04"); // end with ASCII EOT
+
+	// send varString to printer
+	send(sock, varString.c_str(), varString.length(), 0);
+	// then print by sending the PF command and clean up by sending LAYOUT RUN ""
+	std::string printCommand = "PF\nLAYOUT RUN \"\"\n";
+	send(sock, printCommand.c_str(), printCommand.length(), 0);
+	// close the TCP socket
+	closesocket(sock);
+	return;
 }
 
 std::string typeToString(int type){
