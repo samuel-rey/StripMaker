@@ -167,6 +167,10 @@ bool CStripMakerPlugIn::OnCompileCommand(const char* sCommandLine) {
 		settings.printerIP = args.at(2);
 		printMessage(settings.printerIP + " is now the printer IP");
 	}
+	else if (args.at(1) == "printerport" && args.size() == 3) {
+		settings.printerPort = stoi(args.at(2));
+		printMessage(std::to_string(settings.printerPort) + " is now the printer port");
+	}
 	else {
 		printMessage("Invalid command");
 	}
