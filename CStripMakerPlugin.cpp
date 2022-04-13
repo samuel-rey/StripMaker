@@ -148,8 +148,17 @@ bool CStripMakerPlugIn::OnCompileCommand(const char* sCommandLine) {
 	if (strncmp(sCommandLine, ".stripmaker ", strlen(".stripmaker "))) {
 		return false;
 	}
-	std::string command = std::string(sCommandLine).substr(12, std::string::npos);
-	if (command == "reloadsettings") {
+	// split sCommandLine into a string vector called args
+	std::stringstream argStream(sCommandLine);
+	std::string arg;
+	std::vector<std::string> args;
+	while (std::getline(argStream, arg, ' ')) {
+		args.push_back(arg);
+	}
+	if (args.size() == 1) { // if the command is just '.stripmaker, just ignore it
+		return true;
+	}
+	if (args.at(1) == "reloadsettings") {
 		Logger::info("Reloading settings");
 		settings = plugInSettings::settings();
 		settings.load();
