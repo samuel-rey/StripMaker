@@ -181,9 +181,8 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy /Y $(SolutionDir)$(Configuration)\$(ProjectName).dll C:\Users\Samuel\Documents\EuroScope\UK\Data\PlugIn\StripMaker
-copy /Y $(SolutionDir)$(Configuration)\$(ProjectName).dll $(SolutionDir)bin\StripMaker
-xcopy /Y $(SolutionDir)templates\ $(SolutionDir)bin\StripMaker\templates\</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy latest build to project folder</Message>
