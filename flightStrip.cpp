@@ -63,13 +63,13 @@ void flightStrip::display() { // opens a window with the generated strip and sav
 void flightStrip::print() { // routine only for intermec printers
 	if (settings.printerIP == "0.0.0.0") {
 		MessageBox(GetActiveWindow(), "No printer IP specified in settings. Cannot print.", NULL, MB_OK | MB_ICONERROR);
-		return;
+		throw std::exception();
 	}
 	// open a TCP socket to printerIP on printerPort
 	SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (sock == INVALID_SOCKET) {
 		MessageBox(GetActiveWindow(), "Failed to open socket to printer.", NULL, MB_OK | MB_ICONERROR);
-		return;
+		throw std::exception();
 	}
 	sockaddr_in printerAddr;
 	printerAddr.sin_family = AF_INET;
@@ -77,13 +77,13 @@ void flightStrip::print() { // routine only for intermec printers
 	InetPton(AF_INET, settings.printerIP.c_str(), &printerAddr.sin_addr.s_addr);
 	if (connect(sock, (sockaddr*)&printerAddr, sizeof(printerAddr)) == SOCKET_ERROR) {
 		MessageBox(GetActiveWindow(), "Failed to connect to printer.", NULL, MB_OK | MB_ICONERROR);
-		return;
+		throw std::exception();
 	}
 	// to print, we first send "LAYOUT RUN <layoutFile>" to the printer via the TCP socket
-	std::string layoutCommand = std::string("LAYOUT RUN \"").append(stripLayout).append("\"");
+	std::string layoutCommand = std::string("INPUT ON\nLAYOUT RUN \"").append(stripLayout).append("\"");
 	if (send(sock, layoutCommand.c_str(), layoutCommand.length(), 0) == SOCKET_ERROR) {
 		MessageBox(GetActiveWindow(), "Failed to send layout command to printer.", NULL, MB_OK | MB_ICONERROR);
-		return;
+		throw std::exception();
 	}
 
 	// then, we need to pass the vars (fieldContents) to the printer in one single string
