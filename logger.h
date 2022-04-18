@@ -12,6 +12,17 @@ class Logger {
 public:
 	static bool ENABLED;
 
+	static void debug(std::string message) {
+#ifdef _DEBUG
+		if (Logger::ENABLED && settings.dllPath().length() > 0) {
+			std::ofstream file;
+			file.open(settings.dllPath() + "\\logs\\stripmaker.log", std::ofstream::out | std::ofstream::app);
+			file << "DEBUG: " << message << std::endl;
+			file.close();
+		}
+#endif
+	}
+
 	static void info(std::string message) {
 		if (Logger::ENABLED && settings.dllPath().length() > 0) {
 			std::ofstream file;

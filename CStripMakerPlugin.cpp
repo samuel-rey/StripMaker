@@ -16,7 +16,7 @@ CCallsignLookup* Callsigns = nullptr; // loaded phonetic callsigns
 CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILITY_CODE, MY_PLUGIN_NAME, MY_PLUGIN_VERSION, MY_PLUGIN_DEVELOPER, MY_PLUGIN_COPYRIGHT)
 {
 	Logger::ENABLED = true;
-	Logger::info("Loading StripMaker plugin");
+	Logger::debug("Loading StripMaker plugin");
 
 	// set CImg exception mode to 0, this will disable CImg windows with errors as we're handling them ourselves
 	cimg_library::cimg::exception_mode(0);
@@ -50,8 +50,7 @@ CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILI
 	else if (std::filesystem::exists("ICAO_Airlines.txt")) { // else, try to find it in the ES exe directory
 		Callsigns->readFile("ICAO_Airlines.txt");
 	}
-
-	Logger::info("Loaded Stripmaker plugin");
+	Logger::debug("Loaded Stripmaker plugin");
 }
 
 void CStripMakerPlugIn::OnGetTagItem(EuroScopePlugIn::CFlightPlan FlightPlan, // returns TAG Item values for each TAG Item
