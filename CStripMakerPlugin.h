@@ -7,7 +7,7 @@
 #define MY_PLUGIN_NAME      "StripMaker"
 #define MY_PLUGIN_VERSION   "0.1.0"
 #define MY_PLUGIN_DEVELOPER "Samuel Rey"
-#define MY_PLUGIN_COPYRIGHT "GPL v3"
+#define MY_PLUGIN_COPYRIGHT "GPL v3 or later"
 
 class CStripMakerPlugIn :
 	public EuroScopePlugIn::CPlugIn
