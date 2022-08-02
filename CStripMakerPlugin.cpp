@@ -180,7 +180,7 @@ void CStripMakerPlugIn::makeStrip(bool force, bool show, bool print, int stripTy
 				strip.display(); // display the strip if requested
 			}
 			if (print) {
-				//strip.print(); // print the strip if required
+				strip.print(); // print the strip if required
 			}
 		}
 		catch (std::exception) {
