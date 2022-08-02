@@ -23,6 +23,14 @@ CStripMakerPlugIn::CStripMakerPlugIn(void) :CPlugIn(EuroScopePlugIn::COMPATIBILI
 
 	settings.load();
 	
+	// pass settings stored in ES to the plugin settings
+	if (GetDataFromSettings("stripmakerip")) {
+		settings.printerIP = std::string(GetDataFromSettings("stripmakerip"));
+	}
+	if (GetDataFromSettings("stripmakerport")) {
+		settings.printerPort = std::stoi(GetDataFromSettings("stripmakerport"));
+	}
+	
 	// register ES tag items & functions
 	RegisterTagItemType("Print status", TAG_ITEM_PRINT_STATUS);
 	RegisterTagItemType("Strip type", TAG_ITEM_SHOW_STRIP_TYPE);
@@ -165,10 +173,12 @@ bool CStripMakerPlugIn::OnCompileCommand(const char* sCommandLine) {
 	else if (args.at(1) == "printerip" && args.size() == 3) {
 		settings.printerIP = args.at(2);
 		printMessage(settings.printerIP + " is now the printer IP");
+		SaveDataToSettings("stripmakerip", "Printer IP", args.at(2).c_str());
 	}
 	else if (args.at(1) == "printerport" && args.size() == 3) {
 		settings.printerPort = stoi(args.at(2));
 		printMessage(std::to_string(settings.printerPort) + " is now the printer port");
+		SaveDataToSettings("stripmakerport", "Printer port", args.at(2).c_str());
 	}
 	else {
 		printMessage("Invalid command");
